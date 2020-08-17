@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 
+import os
 from setuptools import setup
+
+def package_files(directory):
+    paths = [os.path.join(directory, '*')]
+    for (path, directories, filenames) in os.walk(directory):
+        for d in directories:
+            paths.append(os.path.join(path, d, '*'))
+    return paths
 
 setup(name='scons_docbook_xsl',
       version='1.0',
@@ -9,8 +17,8 @@ setup(name='scons_docbook_xsl',
       author_email='scons-dev@scons.org',
       url='https://github.com/SCons/scons-docbook',
       packages=['scons_docbook_xsl'],
-      package_dir={'': ''},
-      package_data={'scons_docbook_xsl' : ['docbook-xsl-1.76.1/*', 'docbook-slides-3.4.0/*']},
+      package_data={'' : package_files('docbook-xsl-1.76.1') +
+                         package_files('docbook-slides-3.4.0')},
       license='MIT',
       classifiers=['Development Status :: 3 - Alpha',
                    'Environment :: X11 Applications',
