@@ -116,7 +116,7 @@ def adjustColumnWidths(ctx, nodeset):
             pixelWidth = convertLength(tableWidth)
 
         if pixelWidth <= absTotal:
-            print "Table is wider than table width"
+            print("Table is wider than table width")
         else:
             pixelWidth = pixelWidth - absTotal
 
@@ -166,7 +166,7 @@ def convertLength(length):
         if unitHash.has_key(m.group(2)):
             unit = unitHash[m.group(2)]
         else:
-            print "Unrecognized length: " + m.group(2)
+            print("Unrecognized length: " + m.group(2))
 
         pixels = unit * float(m.group(1))
     else:
