@@ -33,13 +33,13 @@ def package_files(directory, packagedir=None):
     return paths
 
 setup(name='scons_docbook_xsl',
-      version='1.0',
+      version='1.1',
       description='Docbook XSLT code and stylesheets for SCons (documentation/build/test).',
       author='SCons Project',
       author_email='scons-dev@scons.org',
       url='https://github.com/SCons/scons-docbook',
       packages=['scons_docbook_xsl'],
-      package_data={'' : package_files('docbook-xsl-1.76.1', 'scons_docbook_xsl') +
+      package_data={'' : package_files('docbook-xsl-1.79.1', 'scons_docbook_xsl') +
                          package_files('docbook-slides-3.4.0', 'scons_docbook_xsl')},
       license='MIT',
       classifiers=['Development Status :: 3 - Alpha',
