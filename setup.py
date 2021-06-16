@@ -1,13 +1,35 @@
 #!/usr/bin/env python
 
 import os
+from pathlib import Path
 from setuptools import setup
 
-def package_files(directory):
+def package_files(directory, packagedir=None):
+    """ Scans the given 'directory' for subfolders that should get packaged too,
+        and returns a list of all those folders.
+        If additionally a 'packagedir' is specified, the search
+        for the folders starts within this packagedir, and its
+        path gets stripped from the resulting folders.
+        @warning Only a single folder name is allowed as 'packagedir', no paths!
+    """
     paths = [os.path.join(directory, '*')]
-    for (path, directories, filenames) in os.walk(directory):
+    startdir = directory
+    if packagedir:
+        startdir = os.path.join(packagedir, directory)
+    for (path, directories, filenames) in os.walk(startdir):
         for d in directories:
-            paths.append(os.path.join(path, d, '*'))
+            if packagedir:
+                # Strip packagedir from the path
+                p = Path(path) / d / '*'
+                if p.parts[0] == packagedir:
+                    dpath = os.path.join(*p.parts[1:])
+                else:
+                    dpath = str(p)
+            else:
+                dpath = os.path.join(path, d, '*')
+                
+            if dpath not in paths:
+                paths.append(dpath)
     return paths
 
 setup(name='scons_docbook_xsl',
@@ -17,8 +39,8 @@ setup(name='scons_docbook_xsl',
       author_email='scons-dev@scons.org',
       url='https://github.com/SCons/scons-docbook',
       packages=['scons_docbook_xsl'],
-      package_data={'' : package_files('docbook-xsl-1.76.1') +
-                         package_files('docbook-slides-3.4.0')},
+      package_data={'' : package_files('docbook-xsl-1.76.1', 'scons_docbook_xsl') +
+                         package_files('docbook-slides-3.4.0', 'scons_docbook_xsl')},
       license='MIT',
       classifiers=['Development Status :: 3 - Alpha',
                    'Environment :: X11 Applications',
